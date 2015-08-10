@@ -5,8 +5,8 @@ set currentlyPlayingTrack to getCurrentlyPlayingTrack()
 on getCurrentlyPlayingTrack()
 	tell application "Spotify"
 		set currentTrack to name of current track as string
-	--	set currentArtist to name of current track as string	
-		return currentTrack --& " " & currentArtist
+		set currentArtist to artist of current track as string
+		return currentTrack & " " & currentArtist
 		next track
 	end tell
 end getCurrentlyPlayingTrack
@@ -21,21 +21,6 @@ end getCurrentlyPlayingTrack
 --end tell
 
 -- Write current songs from Spotify to .txt file
-on writeToFile(track, destFile)
-	try
-		set the destFile to the destFile as text
-		set the openFile to 
-			open for access file destFile with write permission
-		write track to the openFile starting at eof
-		close access to openFile
-		return true
-	on error
-		try
-			close access file destFile
-		end try
-		return false
-	end try
-end writeToFile
-		
-
-
+set userName to (do shell script "whoami") as string
+set filePath to "/Users/" & userName & "/Desktop/myTracks.txt"
+do shell script "echo  " & quoted form of currentlyPlayingTrack & " >>  " & quoted form of filePath
