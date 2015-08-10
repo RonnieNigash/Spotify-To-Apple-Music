@@ -28,7 +28,9 @@ set spotifyState to ""
 tell application "Spotify" to set spotifyState to (player state as text)
 repeat while (spotifyState is equal to "playing")
 	set currentlyPlayingTrack to getCurrentlyPlayingTrack()
+	delay 0.5
 	do shell script "echo  " & quoted form of currentlyPlayingTrack & " >>  " & quoted form of filePath
+	delay 0.5
 	tell application "Spotify" to next track
 	tell application "Spotify" to set spotifyState to (player state as text)
 end repeat
