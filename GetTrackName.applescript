@@ -6,8 +6,7 @@ on getCurrentlyPlayingTrack()
 	tell application "Spotify"
 		set currentTrack to name of current track as string
 		set currentArtist to artist of current track as string
-		return currentTrack & " " & currentArtist
-		next track
+		return currentTrack & " - " & currentArtist
 	end tell
 end getCurrentlyPlayingTrack
 
@@ -23,4 +22,9 @@ end getCurrentlyPlayingTrack
 -- Write current songs from Spotify to .txt file
 set userName to (do shell script "whoami") as string
 set filePath to "/Users/" & userName & "/Desktop/myTracks.txt"
-do shell script "echo  " & quoted form of currentlyPlayingTrack & " >>  " & quoted form of filePath
+tell application "Spotify" to set spotifyState to (player state as text)
+repeat while (spotifyState is equal to "playing")
+	do shell script "echo  " & quoted form of currentlyPlayingTrack & " >>  " & quoted form of filePath
+	tell application "Spotify" to next track
+	tell application "Spotify" to set spotifyState to (player state as text)
+end repeat
